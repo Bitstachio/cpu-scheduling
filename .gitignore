@@ -1,0 +1,36 @@
+# Build directories
+/build/
+cmake-build-*/
+
+# CMake
+CMakeCache.txt
+CMakeFiles/
+#Makefile
+cmake_install.cmake
+compile_commands.json
+
+# CLion
+.idea/
+
+### VS Code ###
+.vscode/
+.code-workspace
+
+# Compiled object files and executables
+*.o
+*.a
+*.so
+*.out
+*.exe
+*.dSYM/
+
+# Log files
+*.log
+
+# OS X
+.DS_Store
+
+# Temporary files
+*.swp
+*.swo
+*~
