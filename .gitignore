@@ -12,7 +12,7 @@ compile_commands.json
 # CLion
 .idea/
 
-### VS Code ###
+# VS Code
 .vscode/
 .code-workspace
 
