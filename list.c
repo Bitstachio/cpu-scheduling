@@ -81,12 +81,12 @@ Node *removeQueue(Queue *queue) {
     return removedNode;
 }
 
-void insertSorted(Node **head, Task *task) {
+void insertSorted(Node **head, Task *task, const CompareFunc compare) {
     Node *newNode = malloc(sizeof(Node));
     newNode->task = task;
     newNode->next = NULL;
 
-    if (*head == NULL || newNode->task->burst < (*head)->task->burst) {
+    if (*head == NULL || compare(newNode->task, (*head)->task) < 0) {
         newNode->next = *head;
         *head = newNode;
         return;
@@ -94,7 +94,7 @@ void insertSorted(Node **head, Task *task) {
 
     Node *curr = *head;
     while (curr->next != NULL &&
-           curr->next->task->burst <= newNode->task->burst) {
+           compare(curr->next->task, newNode->task) <= 0) {
         curr = curr->next;
     }
     newNode->next = curr->next;

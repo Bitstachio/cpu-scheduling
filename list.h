@@ -4,6 +4,8 @@
 
 #include "task.h"
 
+typedef int (*CompareFunc)(Task *, Task *);
+
 typedef struct node {
     Task *task;
     struct node *next;
@@ -22,5 +24,5 @@ void traverse(Node *head);
 void insertQueue(Queue *queue, Task *task);
 Node *removeQueue(Queue *queue);
 
-void insertSorted(Node **head, Task *task);
+void insertSorted(Node **head, Task *task, CompareFunc compare);
 Node *pop(Node **head);
