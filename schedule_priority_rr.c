@@ -6,6 +6,8 @@
 #include <string.h>
 
 Node *head = NULL;
+int id = 0;
+int numProcesses = 0;
 
 int compareByPriority(const Task *a, const Task *b) {
     return b->priority - a->priority;
@@ -16,12 +18,25 @@ void add(char *name, int priority, int burst) {
     task->name = strdup(name);
     task->priority = priority;
     task->burst = burst;
+    task->tid = id++;
 
     insertSorted(&head, task, compareByPriority);
+    numProcesses++;
 }
 
 void schedule() {
     Node *curr = NULL;
+    double completionTimes[numProcesses];
+
+    int burstTimes[numProcesses];
+    for (int i = 0; i < numProcesses; i++) {
+        burstTimes[i] = -1;
+    }
+
+    double turnAroundTime = 0;
+    double turnAroundTimeTotal = 0;
+    double waitTimeTotal = 0;
+
     for (int i = MAX_PRIORITY; i >= MIN_PRIORITY; i--) {
         Queue queue = {.head = NULL, .tail = NULL};
 
@@ -38,10 +53,17 @@ void schedule() {
         while ((node = removeQueue(&queue)) != NULL) {
             Task *task = node->task;
 
+            if (burstTimes[node->task->tid] < 0) {
+                burstTimes[node->task->tid] = node->task->burst;
+            }
+
             const int slice = node->next == NULL       ? task->burst
                               : task->burst >= QUANTUM ? QUANTUM
                                                        : task->burst;
             run(node->task, slice);
+
+            turnAroundTime += slice;
+            completionTimes[task->tid] = turnAroundTime;
 
             task->burst -= slice;
             if (task->burst > 0) {
@@ -49,4 +71,14 @@ void schedule() {
             }
         }
     }
+
+    for (int i = 0; i < numProcesses; i++) {
+        turnAroundTimeTotal += completionTimes[i];
+        waitTimeTotal += completionTimes[i] - burstTimes[i];
+    }
+
+    printf("\nAverage waiting time = %.2f", waitTimeTotal / numProcesses);
+    printf("\nAverage turnaround time = %.2f", turnAroundTimeTotal / numProcesses);
+    // TODO: Average response time
+    // printf("Average response time = %.2f", );
 }
