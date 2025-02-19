@@ -21,7 +21,9 @@ void schedule() {
     while ((node = removeQueue(&queue)) != NULL) {
         Task *task = node->task;
 
-        const int slice = task->burst >= QUANTUM ? QUANTUM : task->burst;
+        const int slice = node->next == NULL       ? task->burst
+                          : task->burst >= QUANTUM ? QUANTUM
+                                                   : task->burst;
         run(node->task, slice);
 
         task->burst -= slice;
