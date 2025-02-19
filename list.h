@@ -4,12 +4,20 @@
 
 #include "task.h"
 
-struct node {
+typedef struct node {
     Task *task;
     struct node *next;
-};
+} Node;
+
+typedef struct queue {
+    Node *head;
+    Node *tail;
+} Queue;
 
 // insert and delete operations.
-void insert(struct node **head, Task *task);
-void delete(struct node **head, Task *task);
-void traverse(struct node *head);
+void insert(Node **head, Task *task);
+void delete(Node **head, Task *task);
+void traverse(Node *head);
+
+void insertQueue(Queue *queue, Task *task);
+Node *removeQueue(Queue *queue);

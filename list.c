@@ -52,3 +52,31 @@ void traverse(struct node *head) {
         temp = temp->next;
     }
 }
+
+void insertQueue(Queue *queue, Task *task) {
+    Node *newNode = malloc(sizeof(Node));
+    newNode->task = task;
+    newNode->next = NULL;
+
+    if (queue->tail == NULL) {
+        queue->head = newNode;
+        queue->tail = newNode;
+    } else {
+        queue->tail->next = newNode;
+        queue->tail = newNode;
+    }
+}
+
+Node *removeQueue(Queue *queue) {
+    if (queue->head == NULL) {
+        return NULL;
+    }
+
+    Node *removedNode = queue->head;
+    queue->head = queue->head->next;
+    if (queue->head == NULL) {
+        queue->tail = NULL;
+    }
+
+    return removedNode;
+}
