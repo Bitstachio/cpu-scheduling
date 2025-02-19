@@ -80,3 +80,34 @@ Node *removeQueue(Queue *queue) {
 
     return removedNode;
 }
+
+void insertSorted(Node **head, Task *task) {
+    Node *newNode = malloc(sizeof(Node));
+    newNode->task = task;
+    newNode->next = NULL;
+
+    if (*head == NULL || newNode->task->burst < (*head)->task->burst) {
+        newNode->next = *head;
+        *head = newNode;
+        return;
+    }
+
+    Node *curr = *head;
+    while (curr->next != NULL &&
+           curr->next->task->burst <= newNode->task->burst) {
+        curr = curr->next;
+    }
+    newNode->next = curr->next;
+    curr->next = newNode;
+}
+
+Node *pop(Node **head) {
+    if (*head == NULL) {
+        return NULL;
+    }
+
+    Node *removedNode = *head;
+    *head = (*head)->next;
+
+    return removedNode;
+}

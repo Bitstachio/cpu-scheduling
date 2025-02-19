@@ -21,3 +21,6 @@ void traverse(Node *head);
 
 void insertQueue(Queue *queue, Task *task);
 Node *removeQueue(Queue *queue);
+
+void insertSorted(Node **head, Task *task);
+Node *pop(Node **head);
