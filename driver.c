@@ -14,7 +14,20 @@
 #include "schedulers.h"
 #include "task.h"
 
+#include <ctype.h>
+#include <stdbool.h>
+
 #define SIZE 100
+
+bool isFileEmpty(FILE *file) {
+    int ch;
+    while ((ch = fgetc(file)) != EOF) {
+        if (!isspace(ch)) {
+            return false;
+        }
+    }
+    return true;
+}
 
 int main(int argc, char *argv[]) {
     FILE *in;
@@ -26,7 +39,12 @@ int main(int argc, char *argv[]) {
     int burst;
 
     in = fopen(argv[1], "r");
+    if (argc < 2 || !in || isFileEmpty(in)) {
+        fprintf(stderr, "Invalid Tasks in Input File");
+        exit(EXIT_FAILURE);
+    }
 
+    rewind(in);
     while (fgets(task, SIZE, in) != NULL) {
         temp = strdup(task);
         name = strsep(&temp, ",");
