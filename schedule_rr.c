@@ -29,8 +29,14 @@ void schedule() {
         burstTimes[i] = -1;
     }
 
+    double startTimes[numProcesses];
+    for (int i = 0; i < numProcesses; i++) {
+        startTimes[i] = -1;
+    }
+
     double turnAroundTime = 0;
     double turnAroundTimeTotal = 0;
+    double responseTimeTotal = 0;
     double waitTimeTotal = 0;
 
     while ((node = removeQueue(&queue)) != NULL) {
@@ -38,6 +44,10 @@ void schedule() {
 
         if (burstTimes[task->tid] < 0) {
             burstTimes[task->tid] = task->burst;
+        }
+
+        if (startTimes[task->tid] < 0) {
+            startTimes[task->tid] = turnAroundTime;
         }
 
         const int slice = node->next == NULL       ? task->burst
@@ -59,8 +69,11 @@ void schedule() {
         waitTimeTotal += completionTimes[i] - burstTimes[i];
     }
 
+    for (int i = 0; i < numProcesses; i++) {
+        responseTimeTotal += startTimes[i];
+    }
+
     printf("\nAverage waiting time = %.2f", waitTimeTotal / numProcesses);
     printf("\nAverage turnaround time = %.2f", turnAroundTimeTotal / numProcesses);
-    // TODO: Average response time
-    // printf("Average response time = %.2f", );
+    printf("\nAverage response time = %.2f", responseTimeTotal / numProcesses);
 }
