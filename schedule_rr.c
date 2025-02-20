@@ -50,9 +50,7 @@ void schedule() {
             startTimes[task->tid] = turnAroundTime;
         }
 
-        const int slice = node->next == NULL       ? task->burst
-                          : task->burst >= QUANTUM ? QUANTUM
-                                                   : task->burst;
+        const int slice = task->burst >= QUANTUM ? QUANTUM : task->burst;
         run(node->task, slice);
 
         turnAroundTime += slice;
@@ -74,6 +72,7 @@ void schedule() {
     }
 
     printf("\nAverage waiting time = %.2f", waitTimeTotal / numProcesses);
-    printf("\nAverage turnaround time = %.2f", turnAroundTimeTotal / numProcesses);
+    printf("\nAverage turnaround time = %.2f",
+           turnAroundTimeTotal / numProcesses);
     printf("\nAverage response time = %.2f", responseTimeTotal / numProcesses);
 }
