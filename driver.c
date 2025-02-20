@@ -51,6 +51,11 @@ int main(int argc, char *argv[]) {
         priority = atoi(strsep(&temp, ","));
         burst = atoi(strsep(&temp, ","));
 
+        if (priority < MIN_PRIORITY || priority > MAX_PRIORITY || burst < 0) {
+            fprintf(stderr, "Invalid Tasks in Input File");
+            exit(EXIT_FAILURE);
+        }
+
         // add the task to the scheduler's list of tasks
         add(name, priority, burst);
 
