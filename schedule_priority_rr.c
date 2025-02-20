@@ -35,12 +35,9 @@ void schedule() {
     double completionTimes[numProcesses];
 
     int burstTimes[numProcesses];
-    for (int i = 0; i < numProcesses; i++) {
-        burstTimes[i] = -1;
-    }
-
     double startTimes[numProcesses];
     for (int i = 0; i < numProcesses; i++) {
+        burstTimes[i] = -1;
         startTimes[i] = -1;
     }
 
@@ -65,11 +62,9 @@ void schedule() {
         while ((node = removeQueue(&queue)) != NULL) {
             Task *task = node->task;
 
-            if (burstTimes[node->task->tid] < 0) {
+            // first encounter with task
+            if (burstTimes[node->task->tid] < 0) { // also: startTimes[task->tid] < 0
                 burstTimes[node->task->tid] = node->task->burst;
-            }
-
-            if (startTimes[task->tid] < 0) {
                 startTimes[task->tid] = turnAroundTime;
             }
 
@@ -91,9 +86,6 @@ void schedule() {
     for (int i = 0; i < numProcesses; i++) {
         turnAroundTimeTotal += completionTimes[i];
         waitTimeTotal += completionTimes[i] - burstTimes[i];
-    }
-
-    for (int i = 0; i < numProcesses; i++) {
         responseTimeTotal += startTimes[i];
     }
 
