@@ -1,5 +1,5 @@
-#include "schedulers.h"
 #include "list.h"
+#include "schedulers.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -12,6 +12,12 @@ void add(char *name, int priority, int burst) {
     task->name = strdup(name);
     task->priority = priority;
     task->burst = burst;
+
+    if (task->priority < MIN_PRIORITY || task->priority > MAX_PRIORITY ||
+        task->burst < 0) {
+        fprintf(stderr, "Invalid Tasks in Input File");
+        exit(EXIT_FAILURE);
+    }
 
     insertQueue(&queue, task);
 }

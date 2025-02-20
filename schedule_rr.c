@@ -16,6 +16,12 @@ void add(char *name, int priority, int burst) {
     task->burst = burst;
     task->tid = id++;
 
+    if (task->priority < MIN_PRIORITY || task->priority > MAX_PRIORITY ||
+        task->burst < 0) {
+        fprintf(stderr, "Invalid Tasks in Input File");
+        exit(EXIT_FAILURE);
+    }
+
     insertQueue(&queue, task);
     numProcesses++;
 }
@@ -72,7 +78,6 @@ void schedule() {
     }
 
     printf("\nAverage waiting time = %.2f", waitTimeTotal / numProcesses);
-    printf("\nAverage turnaround time = %.2f",
-           turnAroundTimeTotal / numProcesses);
+    printf("\nAverage turnaround time = %.2f", turnAroundTimeTotal / numProcesses);
     printf("\nAverage response time = %.2f", responseTimeTotal / numProcesses);
 }
