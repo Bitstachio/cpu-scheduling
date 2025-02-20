@@ -36,6 +36,5 @@ void schedule() {
 
     printf("\nAverage waiting time = %.2f", waitTimeTotal / numProcesses);
     printf("\nAverage turnaround time = %.2f", turnAroundTimeTotal / numProcesses);
-    // TODO: Average response time
-    // printf("Average response time = %.2f", );
+    printf("\nAverage response time = %.2f", waitTimeTotal / numProcesses);
 }
